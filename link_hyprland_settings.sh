@@ -2,8 +2,7 @@
 
 # This script creates symbolic links (symlinks) in the target directory (~/.config)
 # that point to the contents of a source directory. If any existing files or directories
-# in the target directory conflict with the symlink creation, they are renamed with a
-# ".backup_<timestamp>" suffix to avoid overwriting or deleting data.
+# in the target directory conflict with the symlink creation, they are removed.
 
 # Usage:
 # 1. Ensure the SOURCE variable points to the directory containing the original configuration files.
@@ -11,18 +10,12 @@
 # 2. Ensure the TARGET variable points to the directory where the symlinks should be created.
 #    Example: "$HOME/.config"
 # 3. Run the script: ./link_config.sh
-#    - Existing conflicting files or directories in the target directory will be renamed with a
-#      ".backup_<timestamp>" suffix.
+#    - Existing conflicting files or directories in the target directory will be removed.
 #    - Symlinks will then be created in the target directory for all items in the source directory.
 
 # Example Output:
-# Renamed existing /home/user/.config/alacritty to /home/user/.config/alacritty.backup_20250101123456
+# Removed existing /home/user/.config/alacritty
 # Created symlink: /home/user/.config/alacritty -> /home/user/utono/cachyos-hyprland-settings/etc/skel/.config/alacritty
-
-# Notes:
-# - This script ensures no data loss by preserving existing files and directories with backups.
-# - Symlinks allow the target directory to reflect changes made to the source directory dynamically.
-# - Ensure you have the necessary permissions to read/write to both source and target directories.
 
 # Define source and target directories
 SOURCE="$HOME/utono/cachyos-hyprland-settings/etc/skel/.config"
@@ -39,9 +32,9 @@ for item in "$SOURCE"/*; do
 
     # Check if a conflicting directory or file exists in the target
     if [ -e "$target_item" ] || [ -L "$target_item" ]; then
-        # Rename the existing directory or file
-        mv "$target_item" "${target_item}.backup_$(date +%Y%m%d%H%M%S)"
-        echo "Renamed existing $target_item to ${target_item}.backup_$(date +%Y%m%d%H%M%S)"
+        # Remove the existing directory or file
+        rm -rf "$target_item"
+        echo "Removed existing $target_item"
     fi
 
     # Create a symlink in the target directory
