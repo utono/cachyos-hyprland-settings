@@ -4,6 +4,14 @@
 # Moves the cursor to the upper-left of the screen after enabling the touchpad.
 # Usage: touchpad_hyprland.sh ven_04f3:00-04f3:32aa-touchpad
 # https://www.reddit.com/r/hyprland/comments/1cx0lc5/enabling_and_disabling_the_touchpad/
+#
+# hyprctl devices
+#
+# mice:
+#
+#         Mouse at 56a93a3459d0:
+#                 ven_04f3:00-04f3:32aa-touchpad
+#                         default speed: 0.00000
 
 HYPRLAND_DEVICE="$1"
 
