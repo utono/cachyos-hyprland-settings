@@ -21,13 +21,6 @@ fi
 
 export STATUS_FILE="$XDG_RUNTIME_DIR/touchpad.status"
 
-mako_notify() {
-	# Function to send notifications via mako
-	local urgency="$1"
-	local message="$2"
-	echo -e "{\"urgency\": \"$urgency\", \"message\": \"$message\"}" | socat - UNIX-CONNECT:"$XDG_RUNTIME_DIR/mako.socket"
-}
-
 move_cursor_to_upper_left() {
 	# Move the cursor to the upper-left corner of the screen
 	hyprctl dispatch movecursor "0 0"
@@ -43,12 +36,12 @@ switch_to_dvorak() {
 	sleep 0.5
 	# Switch keyboard layout to real_prog_dvorak
 	hyprctl switchxkblayout all 1
-	mako_notify "low" "Switched to real_prog_dvorak layout"
+	notify-send -u low "Switched to real_prog_dvorak layout"
 }
 
 enable_touchpad() {
 	printf "true" >"$STATUS_FILE"
-	mako_notify "low" "Enabling Touchpad"
+	notify-send -u low "Enabling Touchpad"
 	hyprctl keyword "device[$HYPRLAND_DEVICE]:enabled" true
 	restore_touchpad_click
 	move_cursor_to_upper_left
@@ -57,7 +50,7 @@ enable_touchpad() {
 
 disable_touchpad() {
 	printf "false" >"$STATUS_FILE"
-	mako_notify "low" "Disabling Touchpad"
+	notify-send -u low "Disabling Touchpad"
 	hyprctl keyword "device[$HYPRLAND_DEVICE]:enabled" false
 	switch_to_dvorak
 }
