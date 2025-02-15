@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Script to enable or disable the touchpad on Hyprland.
-# Moves the cursor to the upper-left of the screen after enabling the touchpad.
+# Moves the cursor to the upper-left of the screen before disabling the touchpad.
 # Usage: touchpad_hyprland.sh ven_04f3:00-04f3:32aa-touchpad
 # https://www.reddit.com/r/hyprland/comments/1cx0lc5/enabling_and_disabling_the_touchpad/
 #
@@ -40,16 +40,16 @@ switch_to_dvorak() {
 }
 
 enable_touchpad() {
-	printf "true" >"$STATUS_FILE"
+	printf "true" > "$STATUS_FILE"
 	notify-send -u low "Enabling Touchpad"
 	hyprctl keyword "device[$HYPRLAND_DEVICE]:enabled" true
 	restore_touchpad_click
-	move_cursor_to_upper_left
 	switch_to_dvorak
 }
 
 disable_touchpad() {
-	printf "false" >"$STATUS_FILE"
+	move_cursor_to_upper_left
+	printf "false" > "$STATUS_FILE"
 	notify-send -u low "Disabling Touchpad"
 	hyprctl keyword "device[$HYPRLAND_DEVICE]:enabled" false
 	switch_to_dvorak
