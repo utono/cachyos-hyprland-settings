@@ -41,7 +41,7 @@ switch_to_dvorak() {
 
 enable_touchpad() {
 	printf "true" > "$STATUS_FILE"
-	# notify-send -u low "Enabling Touchpad"
+	notify-send -u low "Enabling Touchpad"
 	hyprctl keyword "device[$HYPRLAND_DEVICE]:enabled" true
 	restore_touchpad_click
 	switch_to_dvorak
@@ -50,7 +50,7 @@ enable_touchpad() {
 disable_touchpad() {
 	move_cursor_to_upper_left
 	printf "false" > "$STATUS_FILE"
-	# notify-send -u low "Disabling Touchpad"
+	notify-send -u low "Disabling Touchpad"
 	hyprctl keyword "device[$HYPRLAND_DEVICE]:enabled" false
 	switch_to_dvorak
 }
