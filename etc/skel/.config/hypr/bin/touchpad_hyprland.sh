@@ -34,7 +34,7 @@ move_cursor_to_center() {
 
 restore_touchpad_click() {
 	# Restore touchpad's tap-to-click behavior
-	hyprctl keyword "device[$HYPRLAND_DEVICE]:tap-to-click" true
+	hyprctl keyword "device[$HYPRLAND_DEVICE]:tap-to-click" false
 	hyprctl keyword "device[$HYPRLAND_DEVICE]:clickfinger_behavior" true
 }
 
