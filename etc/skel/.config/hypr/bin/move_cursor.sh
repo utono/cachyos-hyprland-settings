@@ -21,7 +21,7 @@ stdbuf -oL libinput debug-events --device "$TOUCHPAD_DEVICE" | while read -r lin
 
     if [ "$idle_time" -ge 5 ]; then
         # Move cursor to lower-left using Hyprland dispatcher
-        hyprctl dispatch movecursor "0 1200"
+        hyprctl dispatch movecursor "1900 1200"
         last_event=$current_time
     fi
 
