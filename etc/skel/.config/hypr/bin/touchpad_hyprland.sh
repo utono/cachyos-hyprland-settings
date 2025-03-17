@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Script to enable or disable the touchpad on Hyprland.
-# Moves the cursor to the lower-left of the screen before disabling the touchpad.
+# Moves the cursor to the lower-right of the screen before disabling the touchpad.
 # Moves the cursor to the center of the screen after enabling the touchpad.
 # Usage: touchpad_hyprland.sh ven_04f3:00-04f3:32aa-touchpad
 # https://www.reddit.com/r/hyprland/comments/1cx0lc5/enabling_and_disabling_the_touchpad/
@@ -23,8 +23,8 @@ fi
 export STATUS_FILE="$XDG_RUNTIME_DIR/touchpad.status"
 
 move_cursor_to_lower_left() {
-	# Move the cursor to the lower-left corner of the screen
-	hyprctl dispatch movecursor "0 1200"
+	# Move the cursor to the lower-right corner of the screen
+	hyprctl dispatch movecursor "1900 1200"
 }
 
 move_cursor_to_center() {
