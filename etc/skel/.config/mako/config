@@ -1,11 +1,24 @@
 max-visible=10
 layer=top
 font=Sarasa UI SC 10
+# font=monospace 12
 background-color=#4c566add
+# background-color=#1e1e2e
 text-color=#d8dee9
+# text-color=#cdd6f4
 border-color=#434c5e
+# border-color=#89b4fa
 border-radius=7
 max-icon-size=48
 default-timeout=1000
 anchor=top-right
 margin=20
+
+[app-name=mpv]
+anchor=top-right
+default-timeout=1000
+font=Sarasa UI SC 10
+format=%b
+width=400
+height=100
+text-alignment=right
