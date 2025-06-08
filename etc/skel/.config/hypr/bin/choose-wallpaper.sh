@@ -1,26 +1,38 @@
 #!/usr/bin/env bash
 #
-# choose-wallpaper.sh — fzf-based swaybg wallpaper selector
+# choose-wallpaper.sh — fzf-based swaybg wallpaper selector for Hyprland
 #
-# Prompts the user to select a wallpaper from ~/utono/wallpapers using fzf,
-# then restarts swaybg with the selected image.
+# Prompts the user to select a wallpaper (including symlinks) from ~/utono/wallpapers
+# using fzf, then restarts swaybg and records the selection to a log file.
+#
+# To check the current wallpaper:
+#   cat "${XDG_STATE_HOME:-$HOME/.cache}/current-wallpaper.txt"
 
 WALLPAPER_DIR="$HOME/utono/wallpapers"
+LOG_FILE="${XDG_STATE_HOME:-$HOME/.cache}/current-wallpaper.txt"
 
-# Ensure directory exists
+# Verify the wallpaper directory exists
 if [ ! -d "$WALLPAPER_DIR" ]; then
-  echo "❌ Error: Directory $WALLPAPER_DIR does not exist." >&2
+  echo "❌ Error: $WALLPAPER_DIR does not exist." >&2
   exit 1
 fi
 
-# Select a wallpaper using fzf
-SELECTED=$(fd . "$WALLPAPER_DIR" --type f --extension png --extension jpg --extension jpeg |
-  fzf --preview 'kitty +kitten icat --clear --place=50x20@50x0 {}' --height=40% --reverse --prompt="Choose wallpaper: ")
+# Use fd to find image files and symlinks, pipe through fzf with kitty preview
+SELECTED=$(fd --type f --type l --follow --extension png --extension jpg --extension jpeg . "$WALLPAPER_DIR" |
+  fzf --preview 'kitty +kitten icat --clear --place=50x20@50x0 {}' \
+      --height=40% --reverse --prompt="Choose wallpaper: ")
 
 # Exit if nothing selected
-[ -z "$SELECTED" ] && echo "No wallpaper selected." && exit 0
+if [ -z "$SELECTED" ]; then
+  echo "No wallpaper selected."
+  exit 0
+fi
 
-# Kill existing swaybg and apply new wallpaper
+# Record selected wallpaper path to state file
+echo "$SELECTED" > "$LOG_FILE"
+
+# Restart swaybg with the selected wallpaper
 pkill swaybg
 swaybg -o "*" -i "$SELECTED" -m fill &
-echo "✅ Wallpaper set to: $SELECTED"
+
+notify-send "Wallpaper Changed" "Now using: $(basename "$SELECTED")"
